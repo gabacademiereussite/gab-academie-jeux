@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grande Mission Histoire CM1 — Gab Académie Réussite</title>
+<style>
+:root{
+  --primary:#8a5a2b;--secondary:#d89b3c;--accent:#f7c95f;--dark:#3a2b1c;
+  --good:#18864b;--bad:#dc4545;--purple:#704bb3;--ink:#17324d
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+  background:
+    radial-gradient(circle at top left,#fff4d9 0,transparent 34%),
+    radial-gradient(circle at bottom right,#f3e2c5 0,transparent 36%),
+    linear-gradient(180deg,#fffaf2,#f7f0e7)
+}
+.app{max-width:980px;margin:auto;padding:14px}
+.header{
+  background:linear-gradient(135deg,var(--dark),var(--primary));
+  color:white;border-radius:24px;padding:22px;box-shadow:0 14px 34px #0002
+}
+.brand{display:flex;gap:14px;align-items:center}
+.logo{
+  width:68px;height:68px;border-radius:50%;display:grid;place-items:center;
+  background:var(--accent);border:4px solid white;font-size:36px
+}
+h1{margin:0;font-size:clamp(28px,5vw,44px)}
+.subtitle{margin:7px 0 0;opacity:.95}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.pill{background:white;color:var(--dark);padding:7px 11px;border-radius:999px;font-weight:bold}
+.card{
+  background:white;border:2px solid #eadfcf;border-radius:22px;padding:21px;
+  margin-top:16px;box-shadow:0 9px 24px #0001
+}
+.hidden{display:none!important}.center{text-align:center}
+.mascotrow{display:flex;align-items:center;gap:12px;margin-top:12px}
+.mascot{
+  width:64px;height:64px;border-radius:50%;display:grid;place-items:center;
+  font-size:38px;background:white;border:3px solid #eadfcf
+}
+.speech{
+  flex:1;background:#fffaf2;border:2px solid #eadfcf;border-radius:17px;
+  padding:12px;font-weight:bold
+}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.feature{background:#fffaf2;border:2px solid #eadfcf;border-radius:17px;padding:15px;font-weight:bold}
+.btn{
+  border:0;border-radius:14px;padding:14px 22px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;font-weight:bold;font-size:18px;cursor:pointer;box-shadow:0 8px 18px #0002
+}
+.btn.secondary{background:#1769aa;margin-top:15px}
+.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.chip{background:#fff4df;border-radius:999px;padding:8px 12px;font-weight:bold}
+.track{height:14px;background:#ece7df;border-radius:999px;overflow:hidden;margin:14px 0 18px}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--secondary),var(--accent));transition:.35s}
+.topic{color:var(--primary);font-weight:bold}
+.question{font-size:clamp(23px,4vw,32px);font-weight:bold;margin:12px 0 20px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.answer{
+  border:3px solid #eadfcf;background:#fffdf8;border-radius:16px;padding:16px;
+  font-size:18px;font-weight:bold;text-align:left;cursor:pointer
+}
+.answer.correct{background:#e9f9ef;border-color:var(--good)}
+.answer.wrong{background:#fff0f0;border-color:var(--bad)}
+.feedback{margin-top:17px;border-radius:16px;padding:16px;line-height:1.5}
+.good{background:#e9f9ef;border-left:7px solid var(--good)}
+.bad{background:#fff0f0;border-left:7px solid var(--bad)}
+.result-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#fffdf8,#fff7e6)}
+.medal-wrap{display:flex;justify-content:center;margin-top:4px}
+.medal{
+  width:160px;height:160px;border-radius:50%;display:grid;place-items:center;
+  font-size:90px;background:radial-gradient(circle,#fff 0 36%,var(--accent) 37% 62%,var(--secondary) 63% 100%);
+  border:8px solid white;box-shadow:0 12px 28px #0002;animation:pop .6s ease
+}
+.medal.no-medal{background:#f1ede7;font-size:78px}
+.rank{
+  display:inline-block;margin-top:14px;padding:9px 18px;border-radius:999px;
+  background:var(--dark);color:white;font-size:20px;font-weight:900
+}
+.final-score{font-size:28px;font-weight:900;color:var(--primary);margin-top:14px}
+.stars{font-size:40px;letter-spacing:4px;margin:8px}
+.xp{
+  display:inline-block;margin:8px 0 12px;background:#eee7ff;color:var(--purple);
+  border-radius:999px;padding:9px 16px;font-weight:900
+}
+.result-message{font-size:19px;line-height:1.5;max-width:700px;margin:10px auto 18px}
+.review{
+  margin-top:20px;text-align:left;background:#fff;border:2px solid #eadfcf;
+  border-radius:18px;padding:17px
+}
+.review h3{margin:0 0 12px;color:var(--dark)}
+.review-item{
+  padding:12px 0;border-bottom:1px solid #eadfcf;line-height:1.45
+}
+.review-item:last-child{border-bottom:0}
+.review-item strong{color:var(--bad)}
+.review-ok{
+  background:#e9f9ef;border:2px solid #b9e6c9;color:#176b3d;
+  border-radius:15px;padding:14px;font-weight:bold
+}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:999}
+.confetti i{position:absolute;top:-25px;width:10px;height:18px;animation:fall linear forwards}
+@keyframes pop{0%{transform:scale(.4) rotate(-15deg);opacity:0}75%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.footer{text-align:center;color:var(--primary);font-weight:bold;padding:18px 4px}
+@media(max-width:680px){
+  .features,.answers{grid-template-columns:1fr}
+  .app{padding:8px}.header,.card{padding:16px}
+  .medal{width:135px;height:135px;font-size:76px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header">
+  <div class="brand">
+    <div class="logo">🏰</div>
+    <div>
+      <h1>Grande Mission Histoire CM1</h1>
+      <p class="subtitle">Un voyage à travers les grands thèmes étudiés en CM1</p>
+    </div>
+  </div>
+  <div class="pills">
+    <span class="pill">Niveau CM1</span>
+    <span class="pill">Histoire</span>
+    <span class="pill">15 questions</span>
+  </div>
+</header>
+
+<section id="intro" class="card center">
+  <div class="mascotrow">
+    <div class="mascot">🧑🏿‍🏫</div>
+    <div class="speech">Bonjour, je suis Maya. Traverse les époques et gagne ta récompense d’historien !</div>
+  </div>
+  <h2>Prêt pour le voyage dans le temps ?</h2>
+  <p>Les réponses changent de place à chaque partie. Lis bien avant de choisir.</p>
+  <div class="features">
+    <div class="feature">🏰 Vie au Moyen Âge</div>
+    <div class="feature">👑 Monarchie et explorations</div>
+    <div class="feature">🇫🇷 L’année 1789</div>
+  </div>
+  <button class="btn" onclick="startGame()">Commencer la mission</button>
+</section>
+
+<section id="game" class="card hidden">
+  <div class="top">
+    <span class="chip" id="counter"></span>
+    <span class="chip" id="scoreLabel"></span>
+  </div>
+  <div class="track"><div class="bar" id="bar"></div></div>
+  <div class="topic" id="topic"></div>
+  <div class="question" id="question"></div>
+  <div class="answers" id="answers"></div>
+  <div id="feedback" class="hidden"></div>
+  <button id="next" class="btn secondary hidden" onclick="nextQuestion()">Question suivante</button>
+</section>
+
+<section id="result" class="card center result-card hidden">
+  <div class="medal-wrap"><div class="medal" id="medal">🥇</div></div>
+  <div class="rank" id="rank"></div>
+  <div class="final-score" id="finalScore"></div>
+  <div class="stars" id="stars"></div>
+  <div class="xp" id="xp"></div>
+  <p class="result-message" id="message"></p>
+
+  <div class="mascotrow">
+    <div class="mascot">🧑🏿‍🏫</div>
+    <div class="speech" id="finalSpeech"></div>
+  </div>
+
+  <div id="review" class="review"></div>
+
+  <div class="actions">
+    <button class="btn" onclick="startGame()">🔄 Rejouer</button>
+  </div>
+</section>
+
+<div class="footer">Gab Académie Réussite — Votre réussite à portée de main</div>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+const QUESTIONS=[
+{
+  topic:"La vie au Moyen Âge",
+  question:"À quoi sert principalement un château fort ?",
+  correct:"À protéger et à loger le seigneur",
+  wrong:["À faire circuler les trains","À fabriquer des voitures","À accueillir les avions"],
+  explanation:"Le château est un lieu de protection, de vie et de pouvoir pour le seigneur.",
+  lesson:"La vie au Moyen Âge"
+},
+{
+  topic:"La vie au Moyen Âge",
+  question:"Qui cultive surtout les terres de la seigneurie ?",
+  correct:"Les paysannes et les paysans",
+  wrong:["Les navigateurs","Les artistes de la cour","Les soldats romains"],
+  explanation:"Les paysannes et les paysans accomplissent les travaux agricoles au fil des saisons.",
+  lesson:"Les paysans et la seigneurie"
+},
+{
+  topic:"La vie au Moyen Âge",
+  question:"Où les habitants d’une ville médiévale peuvent-ils acheter et vendre des produits ?",
+  correct:"Au marché ou à la foire",
+  wrong:["Dans un aéroport","Dans un métro","Dans un supermarché moderne"],
+  explanation:"Les marchés et les foires sont des lieux importants du commerce au Moyen Âge.",
+  lesson:"Les villes et le commerce au Moyen Âge"
+},
+{
+  topic:"La vie au Moyen Âge",
+  question:"Quelle institution encadre fortement la vie des habitants au Moyen Âge ?",
+  correct:"L’Église",
+  wrong:["La télévision","Le Parlement européen","La compagnie aérienne"],
+  explanation:"L’Église accompagne la vie des habitants, enseigne et aide aussi les pauvres et les malades.",
+  lesson:"Le rôle de l’Église au Moyen Âge"
+},
+{
+  topic:"La monarchie en France",
+  question:"Quel roi accueille Léonard de Vinci en France ?",
+  correct:"François Ier",
+  wrong:["Louis XVI","Napoléon Ier","Clovis"],
+  explanation:"François Ier soutient les arts et accueille Léonard de Vinci pendant la Renaissance.",
+  lesson:"François Ier et la Renaissance"
+},
+{
+  topic:"La monarchie en France",
+  question:"Quel roi fait de Versailles le symbole de son pouvoir ?",
+  correct:"Louis XIV",
+  wrong:["Henri IV","François Ier","Charlemagne"],
+  explanation:"Louis XIV utilise Versailles pour montrer la puissance du roi.",
+  lesson:"Louis XIV et Versailles"
+},
+{
+  topic:"La monarchie en France",
+  question:"Quel roi fait adopter l’édit de Nantes en 1598 ?",
+  correct:"Henri IV",
+  wrong:["Louis XIV","François Ier","Louis XVI"],
+  explanation:"Henri IV cherche à ramener la paix après les guerres de religion.",
+  lesson:"Henri IV et l’édit de Nantes"
+},
+{
+  topic:"La monarchie en France",
+  question:"Sous l’Ancien Régime, la société est divisée en combien d’ordres ?",
+  correct:"Trois",
+  wrong:["Deux","Cinq","Dix"],
+  explanation:"Les trois ordres sont le clergé, la noblesse et le tiers état.",
+  lesson:"La société sous l’Ancien Régime"
+},
+{
+  topic:"Explorations et conquêtes",
+  question:"Quel instrument indique le nord aux navigateurs ?",
+  correct:"La boussole",
+  wrong:["Le thermomètre","La loupe","La balance"],
+  explanation:"La boussole aide les navigateurs à s’orienter en mer.",
+  lesson:"Les outils des navigateurs"
+},
+{
+  topic:"Explorations et conquêtes",
+  question:"Quel navire est utilisé pour de longues explorations au XVe siècle ?",
+  correct:"La caravelle",
+  wrong:["Le train","Le sous-marin nucléaire","La montgolfière"],
+  explanation:"La caravelle est un navire léger et maniable, adapté aux voyages lointains.",
+  lesson:"Les grandes explorations"
+},
+{
+  topic:"Explorations et conquêtes",
+  question:"En quelle année Christophe Colomb débarque-t-il en Amérique ?",
+  correct:"1492",
+  wrong:["1789","1515","1914"],
+  explanation:"1492 est un repère essentiel des grandes explorations européennes.",
+  lesson:"Christophe Colomb et 1492"
+},
+{
+  topic:"Explorations et conquêtes",
+  question:"Laquelle de ces denrées vient des échanges avec les colonies américaines ?",
+  correct:"Le chocolat",
+  wrong:["Le camembert","La baguette","Le beurre"],
+  explanation:"Le chocolat, la tomate, la pomme de terre et le haricot font partie des denrées venues d’Amérique.",
+  lesson:"Les échanges entre l’Europe et l’Amérique"
+},
+{
+  topic:"1789, année révolutionnaire",
+  question:"Quel événement a lieu le 14 juillet 1789 ?",
+  correct:"La prise de la Bastille",
+  wrong:["Le sacre de Louis XIV","Le départ de Christophe Colomb","La construction de Versailles"],
+  explanation:"La prise de la Bastille devient un symbole majeur de la Révolution française.",
+  lesson:"La prise de la Bastille"
+},
+{
+  topic:"1789, année révolutionnaire",
+  question:"Que supprime la nuit du 4 août 1789 ?",
+  correct:"Les privilèges",
+  wrong:["Les écoles","Les villes","Les marchés"],
+  explanation:"L’abolition des privilèges met fin à une partie des inégalités de l’Ancien Régime.",
+  lesson:"La nuit du 4 août 1789"
+},
+{
+  topic:"1789, année révolutionnaire",
+  question:"Quel texte proclame notamment la liberté et l’égalité ?",
+  correct:"La Déclaration des droits de l’homme et du citoyen",
+  wrong:["L’édit de Nantes","La Chanson de Roland","Le Code civil"],
+  explanation:"La Déclaration des droits de l’homme et du citoyen est adoptée en août 1789.",
+  lesson:"La Déclaration des droits de l’homme et du citoyen"
+}
+];
+
+let current=0;
+let score=0;
+let locked=false;
+let mistakes=[];
+
+const $=id=>document.getElementById(id);
+
+function shuffle(array){
+  const copy=[...array];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+
+function startGame(){
+  current=0;
+  score=0;
+  locked=false;
+  mistakes=[];
+  $("intro").classList.add("hidden");
+  $("result").classList.add("hidden");
+  $("game").classList.remove("hidden");
+  renderQuestion();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderQuestion(){
+  locked=false;
+  const item=QUESTIONS[current];
+  const options=shuffle([item.correct,...item.wrong]);
+
+  $("counter").textContent=`Question ${current+1} sur ${QUESTIONS.length}`;
+  $("scoreLabel").textContent=`⭐ Score : ${score}`;
+  $("bar").style.width=`${current/QUESTIONS.length*100}%`;
+  $("topic").textContent="📜 "+item.topic;
+  $("question").textContent=item.question;
+  $("answers").innerHTML="";
+  $("feedback").className="hidden";
+  $("next").classList.add("hidden");
+
+  options.forEach(text=>{
+    const button=document.createElement("button");
+    button.className="answer";
+    button.textContent=text;
+    button.onclick=()=>chooseAnswer(text,button);
+    $("answers").appendChild(button);
+  });
+}
+
+function chooseAnswer(selectedText,button){
+  if(locked)return;
+  locked=true;
+
+  const item=QUESTIONS[current];
+  const buttons=[...document.querySelectorAll(".answer")];
+
+  buttons.forEach(btn=>{
+    btn.disabled=true;
+    if(btn.textContent===item.correct){
+      btn.classList.add("correct");
+    }
+  });
+
+  const isCorrect=selectedText===item.correct;
+
+  if(isCorrect){
+    score++;
+    button.classList.add("correct");
+  }else{
+    button.classList.add("wrong");
+    mistakes.push({
+      number:current+1,
+      question:item.question,
+      chosen:selectedText,
+      correct:item.correct,
+      lesson:item.lesson
+    });
+  }
+
+  $("scoreLabel").textContent=`⭐ Score : ${score}`;
+  $("bar").style.width=`${(current+1)/QUESTIONS.length*100}%`;
+  $("feedback").className="feedback "+(isCorrect?"good":"bad");
+  $("feedback").innerHTML=`
+    <strong>${isCorrect?"Bravo !":"Ce n’est pas encore ça."}</strong><br>
+    ${item.explanation}
+    <div class="mascotrow">
+      <div class="mascot">${isCorrect?"😊":"💪"}</div>
+      <div class="speech">${isCorrect?"Très bien, tu avances dans le temps !":"Lis l’explication puis poursuis la mission."}</div>
+    </div>`;
+
+  $("next").textContent=current===QUESTIONS.length-1?"Voir mon résultat":"Question suivante";
+  $("next").classList.remove("hidden");
+}
+
+function nextQuestion(){
+  current++;
+  if(current<QUESTIONS.length){
+    renderQuestion();
+  }else{
+    finishGame();
+  }
+}
+
+function getReward(finalScore){
+  if(finalScore===15){
+    return {
+      medal:"👑",
+      rank:"COURONNE DU GRAND HISTORIEN",
+      stars:"⭐⭐⭐",
+      xp:150,
+      message:"Résultat parfait ! Tu maîtrises tous les grands repères de cette mission.",
+      speech:"Exceptionnel ! Tu as traversé toutes les époques sans erreur.",
+      confetti:true,
+      hasMedal:true
+    };
+  }
+
+  if(finalScore===14){
+    return {
+      medal:"🥇",
+      rank:"MÉDAILLE D’OR DE L’HISTORIEN",
+      stars:"⭐⭐⭐",
+      xp:140,
+      message:"Excellent résultat ! Il ne te manque qu’une seule bonne réponse pour atteindre le sans-faute.",
+      speech:"Bravo ! Tu remportes une vraie médaille d’or.",
+      confetti:true,
+      hasMedal:true
+    };
+  }
+
+  if(finalScore>=12){
+    return {
+      medal:"🥈",
+      rank:"MÉDAILLE D’ARGENT DE L’HISTORIEN",
+      stars:"⭐⭐",
+      xp:120,
+      message:"Très bon travail ! Tes connaissances sont solides, mais quelques repères restent à revoir.",
+      speech:"Relis tes erreurs puis rejoue pour viser l’or.",
+      confetti:false,
+      hasMedal:true
+    };
+  }
+
+  if(finalScore>=9){
+    return {
+      medal:"🥉",
+      rank:"MÉDAILLE DE BRONZE DE L’HISTORIEN",
+      stars:"⭐",
+      xp:90,
+      message:"Tu connais déjà plusieurs repères importants. Une révision te permettra de progresser.",
+      speech:"Bravo pour tes efforts. Revois les notions indiquées ci-dessous.",
+      confetti:false,
+      hasMedal:true
+    };
+  }
+
+  return {
+    medal:"📜",
+    rank:"MISSION À RECOMMENCER",
+    stars:"",
+    xp:50,
+    message:"Tu n’obtiens pas encore de médaille. Relis les leçons indiquées ci-dessous puis retente la mission.",
+    speech:"Ce n’est pas grave : le récapitulatif te montre exactement ce qu’il faut revoir.",
+    confetti:false,
+    hasMedal:false
+  };
+}
+
+function finishGame(){
+  $("game").classList.add("hidden");
+  $("result").classList.remove("hidden");
+
+  const reward=getReward(score);
+
+  $("medal").textContent=reward.medal;
+  $("medal").classList.toggle("no-medal",!reward.hasMedal);
+  $("rank").textContent=reward.rank;
+  $("stars").textContent=reward.stars;
+  $("finalScore").textContent=`${score} bonne${score>1?"s":""} réponse${score>1?"s":""} sur ${QUESTIONS.length}`;
+  $("xp").textContent=`+ ${reward.xp} points d’expérience`;
+  $("message").textContent=reward.message;
+  $("finalSpeech").textContent=reward.speech;
+
+  renderReview();
+
+  if(reward.confetti){
+    launchConfetti();
+  }
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderReview(){
+  if(mistakes.length===0){
+    $("review").innerHTML=`
+      <h3>Récapitulatif</h3>
+      <div class="review-ok">✅ Aucune erreur : toutes les notions sont maîtrisées.</div>`;
+    return;
+  }
+
+  const items=mistakes.map(m=>`
+    <div class="review-item">
+      <strong>❌ Question ${m.number}</strong><br>
+      ${m.question}<br>
+      <b>Ta réponse :</b> ${m.chosen}<br>
+      <b>Bonne réponse :</b> ${m.correct}<br>
+      <b>À revoir :</b> ${m.lesson}
+    </div>
+  `).join("");
+
+  $("review").innerHTML=`
+    <h3>Les notions à revoir</h3>
+    ${items}
+  `;
+}
+
+function launchConfetti(){
+  const colors=["#f7c95f","#16884b","#1769aa","#dc4545","#704bb3","#d89b3c"];
+  const box=$("confetti");
+  box.innerHTML="";
+
+  for(let i=0;i<90;i++){
+    const piece=document.createElement("i");
+    piece.style.left=Math.random()*100+"vw";
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.animationDuration=(2.2+Math.random()*1.8)+"s";
+    piece.style.animationDelay=(Math.random()*.7)+"s";
+    box.appendChild(piece);
+  }
+
+  setTimeout(()=>box.innerHTML="",4500);
+}
+</script>
+</body>
+</html>
