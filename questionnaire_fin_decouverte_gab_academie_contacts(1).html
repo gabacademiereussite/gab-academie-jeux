@@ -1,0 +1,26 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Questionnaire découverte</title>
+<style>body{font-family:Arial;background:#f4fbf6;color:#17324d;margin:0}.w{max-width:800px;margin:auto;padding:20px}.card{background:white;padding:25px;border-radius:22px;margin-top:18px;box-shadow:0 8px 25px #0001}h1{text-align:center}.q{display:none}.q.on{display:block}.opts{display:grid;gap:10px}.o{padding:14px;border:2px solid #dce8df;border-radius:14px;cursor:pointer;font-weight:bold}.o.sel{background:#e4f7e9;border-color:#159447}button{padding:13px 18px;border:0;border-radius:13px;background:#159447;color:white;font-weight:bold;font-size:16px;margin-top:15px}.result{display:none}.pay{display:none;background:#fff8df;padding:16px;border-radius:15px;margin-top:15px}.bar{height:12px;background:#e0e9e3;border-radius:20px}.b{height:100%;width:25%;background:#159447;border-radius:20px}</style></head>
+<body><div class="w"><h1>🎉 Et maintenant ?</h1><p style="text-align:center">Quelques secondes pour nous dire ce que vous avez pensé de Gab Académie Réussite.</p><div class="bar"><div class="b" id="b"></div></div>
+<div class="card" id="quiz">
+<div class="q on"><h2>1. Qu’avez-vous pensé de votre découverte ?</h2><div class="opts"><div class="o">❤️ J’ai beaucoup aimé</div><div class="o">🙂 J’ai bien aimé</div><div class="o">🤔 J’aimerais encore en découvrir davantage</div><div class="o">😕 Cela ne correspond pas à ce que je recherche</div></div></div>
+<div class="q"><h2>2. Pour quel niveau recherchez-vous un accompagnement ?</h2><div class="opts"><div class="o">CE1</div><div class="o">CE2</div><div class="o">CM1</div><div class="o">CM2</div><div class="o">Plusieurs niveaux</div></div></div>
+<div class="q"><h2>3. Qu’est-ce qui vous intéresse le plus ?</h2><div class="opts"><div class="o">📚 Les fiches de cours</div><div class="o">✅ Les quiz</div><div class="o">🎮 Les jeux et défis</div><div class="o">🌟 L’ensemble du programme</div><div class="o">💬 L’accompagnement et le suivi</div></div></div>
+<div class="q"><h2>4. Êtes-vous prêt(e) à inscrire votre enfant ?</h2><div class="opts"><div class="o" data-i="yes">🚀 Oui, je souhaite l’inscrire</div><div class="o" data-i="maybe">🤔 Peut-être, j’aimerais encore réfléchir</div><div class="o" data-i="info">💬 J’ai besoin de plus d’informations</div><div class="o" data-i="no">Pas pour le moment</div></div></div>
+<button id="next" style="display:none">Continuer →</button></div>
+<div class="card result" id="result"><h2 id="title"></h2><p id="msg"></p><div id="summary"></div><button id="paybtn" style="display:none">💳 Comment finaliser l’inscription ?</button>
+<div class="pay" id="pay"><h3>Comment procéder ?</h3><p>Pour demander l’activation de l’accès de votre enfant, choisissez votre mode de règlement :</p><p>🏦 <b>Virement bancaire</b><br>📱 <b>Airtel Money</b><br>📱 <b>Moov Money</b><br>💵 <b>Espèces</b></p><p>Après le règlement, contactez Gab Académie Réussite en indiquant <b>le nom de l’enfant et son niveau</b>.</p>
+<p><b>📞 Nous contacter :</b><br>
+Gabon : <b>+241 066 67 34 45</b><br>
+France : <b>+33 6 28 67 34 43</b><br>
+✉️ <b>gabacademiereussite@gmail.com</b></p></div></div>
+</div><script>
+let n=0,a=["","","",""],intent="";const qs=[...document.querySelectorAll(".q")],next=document.getElementById("next");
+document.querySelectorAll(".o").forEach(o=>o.onclick=()=>{let q=o.closest(".q"),i=qs.indexOf(q);q.querySelectorAll(".o").forEach(x=>x.classList.remove("sel"));o.classList.add("sel");a[i]=o.textContent.trim();if(i===3)intent=o.dataset.i||"";next.style.display="inline-block"});
+next.onclick=()=>{if(n<3){qs[n].classList.remove("on");n++;qs[n].classList.add("on");document.getElementById("b").style.width=((n+1)*25)+"%";next.style.display=a[n]?"inline-block":"none"}else finish()};
+function finish(){document.getElementById("quiz").style.display="none";document.getElementById("result").style.display="block";let t="Merci d’avoir découvert Gab Académie !",m="Merci pour votre retour.";
+if(intent==="yes"){t="🎉 Vous êtes prêt(e) à rejoindre Gab Académie !";m="Il ne reste plus qu’à choisir votre mode de règlement.";document.getElementById("paybtn").style.display="inline-block"}
+if(intent==="maybe"){t="🌱 Prenez le temps de choisir";m="Vous pourrez revenir à cette découverte quand vous le souhaitez."}
+if(intent==="info"){t="💬 Vous avez encore une question ?";m="Consultez la FAQ ou contactez-nous : +241 066 67 34 45 (Gabon) • +33 6 28 67 34 43 (France) • gabacademiereussite@gmail.com"}
+document.getElementById("title").textContent=t;document.getElementById("msg").textContent=m;document.getElementById("summary").innerHTML="<p><b>Niveau recherché :</b> "+a[1]+"<br><b>Ce qui vous intéresse :</b> "+a[2]+"</p>"}
+document.getElementById("paybtn").onclick=()=>document.getElementById("pay").style.display="block";
+</script></body></html>
