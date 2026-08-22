@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Quiz Conjugaison CM2 | Gab Académie Réussite</title>
+<style>
+:root {
+  --green:#15924b; --green-dark:#0d6c3a; --yellow:#f4c21f; --orange:#f18a2e;
+  --blue:#2867c8; --purple:#7a55d7; --pink:#ec5f9d; --red:#d94b57;
+  --ink:#18324c; --muted:#6f7f91; --paper:#fffdf8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+body{
+  padding:12px;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(244,194,31,.28),transparent 24%),
+    radial-gradient(circle at 92% 10%,rgba(21,146,75,.18),transparent 23%),
+    linear-gradient(135deg,#eef9f2,#f6f2ff 58%,#fff8e9);
+}
+button{font:inherit}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 20px 60px rgba(24,50,76,.18)}
+.toolbar{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;
+  background:#f6faf7;border-bottom:1px solid #e5eee8;position:sticky;top:0;z-index:5
+}
+.toolset{display:flex;gap:8px;flex-wrap:wrap}
+.tool{
+  border:0;border-radius:12px;background:#fff;color:var(--green-dark);font-weight:800;
+  padding:9px 12px;cursor:pointer;box-shadow:0 3px 10px rgba(24,50,76,.08)
+}
+.tool:hover{transform:translateY(-1px)}
+header{
+  position:relative;padding:25px 24px;color:#fff;
+  background:linear-gradient(110deg,var(--green-dark),var(--green) 58%,#24a95e)
+}
+header:after{content:"✦";position:absolute;right:24px;top:5px;font-size:68px;color:var(--yellow);transform:rotate(12deg)}
+.brand{font-weight:900;font-size:14px;letter-spacing:.5px}
+h1{margin:7px 0 4px;font-size:clamp(32px,6vw,54px);line-height:1}
+header p{margin:0;font-size:18px}
+main{padding:22px}
+.screen{display:none} .screen.active{display:block}
+.card{
+  background:linear-gradient(180deg,#fff,#fffdf8);border:2px solid #e6ebf3;border-radius:24px;
+  padding:24px;box-shadow:0 10px 28px rgba(24,50,76,.09)
+}
+.start-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
+.hero{
+  min-height:300px;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(145deg,#fff1b4,#e8f6ed 55%,#eee9ff);font-size:92px;text-align:center
+}
+.hero small{font-size:17px;font-weight:800;color:var(--green-dark);margin-top:8px}
+.lead{font-size:20px;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.chip{padding:8px 12px;border-radius:999px;background:#edf4ff;color:var(--blue);font-weight:800}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}
+.feature{padding:11px;border-radius:14px;background:#f7f9fc;text-align:center;font-weight:800;font-size:14px}
+.bareme{
+  margin:17px 0;padding:15px;border-radius:16px;background:#fff8dc;border:2px solid #f6df85
+}
+.bareme h3{margin:0 0 9px}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.scale div{padding:9px;border-radius:11px;text-align:center;font-weight:800;font-size:13px}
+.s1{background:#ffe7e7} .s2{background:#fff0d9} .s3{background:#eaf5ff} .s4{background:#e6f7ec}
+.btn{
+  border:0;border-radius:15px;padding:14px 20px;background:var(--orange);color:#fff;
+  font-weight:900;cursor:pointer;box-shadow:0 6px 0 #ca6b22;transition:.15s
+}
+.btn:hover{filter:brightness(1.03);transform:translateY(-1px)} .btn:active{transform:translateY(4px);box-shadow:0 2px 0 #ca6b22}
+.top{
+  display:grid;grid-template-columns:auto 1fr auto auto;gap:11px;align-items:center;margin-bottom:18px
+}
+.pill{padding:10px 13px;border:2px solid #e6ebf3;border-radius:14px;background:#fff;font-weight:900;white-space:nowrap}
+.progress{height:16px;background:#e6ebf3;border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--yellow),var(--orange),var(--pink));transition:.35s}
+.streak{color:var(--purple)}
+.cat{display:inline-block;padding:7px 12px;border-radius:999px;background:#e7f7ed;color:var(--green-dark);font-weight:900}
+.q{font-size:clamp(24px,4vw,34px);line-height:1.35;text-align:center;font-weight:900;margin:22px auto;max-width:800px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.answer{
+  border:2px solid #dce4ef;border-radius:17px;background:#fff;padding:17px 14px;min-height:62px;
+  font-size:19px;font-weight:900;color:var(--ink);cursor:pointer;transition:.16s
+}
+.answer:hover:not(:disabled){border-color:var(--blue);background:#f4f8ff;transform:translateY(-2px)}
+.answer.good{background:#e7f7ed;border-color:var(--green);color:var(--green-dark)}
+.answer.bad{background:#ffeded;border-color:var(--red);color:#9d2f39}
+.feedback{display:none;margin-top:16px;padding:14px 16px;border-radius:15px;line-height:1.45;font-size:17px}
+.feedback.show{display:block} .ok{background:#e7f7ed;border:2px solid #b6e4c6} .no{background:#fff0f0;border:2px solid #efbcc1}
+.next{text-align:right;margin-top:14px} #next{display:none}
+.result{text-align:center} .trophy{font-size:94px} .stars{font-size:42px;margin:10px 0}
+.result-badge{display:inline-block;padding:9px 15px;border-radius:999px;font-weight:900;margin:8px 0}
+.review{text-align:left;display:grid;gap:9px;margin-top:20px}
+.review div{padding:12px;border-left:5px solid var(--orange);background:#f7f9fc;border-radius:9px}
+.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.secondary{background:var(--blue);box-shadow:0 6px 0 #184a98}
+footer{padding:14px 22px;background:#f4faf6;color:var(--green-dark);font-weight:800;display:flex;justify-content:space-between;gap:12px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:20}
+.confetti i{position:absolute;width:10px;height:16px;top:-20px;animation:fall 1.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:720px){
+  .start-grid{grid-template-columns:1fr} .hero{min-height:180px;font-size:72px}
+  .answers{grid-template-columns:1fr} .top{grid-template-columns:1fr 1fr}
+  .progress{grid-column:1/-1;grid-row:2} .scale{grid-template-columns:1fr 1fr}
+  .features{grid-template-columns:1fr} header:after{font-size:44px}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="toolbar">
+    <div class="toolset">
+      <button class="tool" id="backCourse">← Retour au cours</button>
+    </div>
+    <div class="toolset">
+      <button class="tool" id="fullscreen">⛶ Plein écran</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="brand">GAB ACADÉMIE RÉUSSITE</div>
+    <h1>Quiz Conjugaison CM2</h1>
+    <p>20 questions pour réviser les temps essentiels</p>
+  </header>
+
+  <main>
+    <section id="start" class="screen active">
+      <div class="start-grid">
+        <div class="card">
+          <h2>Prêt(e) à tester ta conjugaison ?</h2>
+          <p class="lead">Choisis la bonne forme du verbe. Une correction claire apparaît après chaque réponse.</p>
+
+          <div class="chips">
+            <span class="chip">Présent</span>
+            <span class="chip">Imparfait</span>
+            <span class="chip">Futur simple</span>
+            <span class="chip">Passé composé</span>
+          </div>
+
+          <div class="features">
+            <div class="feature">🎯 20 questions</div>
+            <div class="feature">⚡ Correction immédiate</div>
+            <div class="feature">🏆 Score final</div>
+          </div>
+
+          <div class="bareme">
+            <h3>Barème de réussite</h3>
+            <div class="scale">
+              <div class="s1">0–9<br>À revoir</div>
+              <div class="s2">10–13<br>En progrès</div>
+              <div class="s3">14–17<br>Très bien</div>
+              <div class="s4">18–20<br>Excellent</div>
+            </div>
+          </div>
+
+          <button class="btn" id="go">Commencer le quiz 🚀</button>
+        </div>
+        <div class="hero">
+          📝✨
+          <small>Conjugue, progresse, réussis !</small>
+        </div>
+      </div>
+    </section>
+
+    <section id="game" class="screen">
+      <div class="top">
+        <div class="pill">Question <span id="num">1</span>/20</div>
+        <div class="progress"><div id="bar" class="bar"></div></div>
+        <div class="pill">⭐ <span id="score">0</span></div>
+        <div class="pill streak">🔥 <span id="streak">0</span></div>
+      </div>
+
+      <div class="card">
+        <div id="cat" class="cat"></div>
+        <div id="q" class="q"></div>
+        <div id="answers" class="answers"></div>
+        <div id="fb" class="feedback"></div>
+        <div class="next"><button id="next" class="btn">Question suivante ➜</button></div>
+      </div>
+    </section>
+
+    <section id="result" class="screen result">
+      <div class="trophy">🏆</div>
+      <h2 id="rt"></h2>
+      <div id="stars" class="stars"></div>
+      <p id="rs" class="lead"></p>
+      <div id="resultBadge" class="result-badge"></div>
+      <p id="msg" class="lead"></p>
+
+      <div class="result-actions">
+        <button id="again" class="btn">Rejouer 🔄</button>
+        <button id="backCourse2" class="btn secondary">← Retour au cours</button>
+      </div>
+
+      <div id="review" class="review"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Votre réussite scolaire à portée de main</span>
+    <span>Gab Académie Réussite 📚</span>
+  </footer>
+</div>
+<div id="confetti" class="confetti"></div>
+
+<script>
+const B=[["Présent", "Chaque matin, nous ___ le bus à 7 h.", ["prenons", "prennons", "prenez", "prennent"], 0, "Avec « nous », le verbe prendre se conjugue « nous prenons »."], ["Présent", "Vous ___ vos devoirs avant de jouer.", ["finissez", "finissiez", "finirez", "finissent"], 0, "Au présent, finir avec « vous » donne « vous finissez »."], ["Présent", "Ils ___ souvent leurs grands-parents.", ["voient", "voyent", "vois", "verront"], 0, "Au présent, voir avec « ils » donne « ils voient »."], ["Présent", "Tu ___ toujours la vérité.", ["dis", "dit", "dira", "disais"], 0, "Au présent, dire avec « tu » donne « tu dis »."], ["Présent", "Ma sœur ___ ses affaires.", ["range", "ranges", "rangera", "rangeait"], 0, "Avec « ma sœur » = elle, on écrit « elle range »."], ["Imparfait", "Quand j'étais petit, je ___ souvent chez ma grand-mère.", ["jouais", "jouerai", "joue", "ai joué"], 0, "À l’imparfait, jouer avec « je » donne « je jouais »."], ["Imparfait", "Nous ___ toujours ensemble après l'école.", ["marchions", "marcherons", "marchons", "avons marché"], 0, "À l’imparfait, marcher avec « nous » donne « nous marchions »."], ["Imparfait", "Vous ___ très vite quand vous étiez jeunes.", ["couriez", "courez", "courrez", "avez couru"], 0, "À l’imparfait, courir avec « vous » donne « vous couriez »."], ["Imparfait", "Les enfants ___ dans la cour pendant la récréation.", ["jouaient", "joueront", "jouent", "ont joué"], 0, "À l’imparfait, jouer avec « ils » donne « ils jouaient »."], ["Imparfait", "Tu ___ toujours ton sac près de la porte.", ["posais", "poses", "poseras", "as posé"], 0, "À l’imparfait, poser avec « tu » donne « tu posais »."], ["Futur simple", "Demain, nous ___ au musée.", ["irons", "allons", "allions", "sommes allés"], 0, "Au futur simple, aller avec « nous » donne « nous irons »."], ["Futur simple", "Vous ___ votre travail avant midi.", ["finirez", "finissez", "finissiez", "avez fini"], 0, "Au futur simple, finir avec « vous » donne « vous finirez »."], ["Futur simple", "Il ___ son cousin la semaine prochaine.", ["verra", "voit", "voyait", "a vu"], 0, "Au futur simple, voir avec « il » donne « il verra »."], ["Futur simple", "Elles ___ leurs affaires avant de partir.", ["prépareront", "préparent", "préparaient", "ont préparé"], 0, "Au futur simple, préparer avec « elles » donne « elles prépareront »."], ["Futur simple", "Tu ___ ton professeur demain matin.", ["appelleras", "appellerais", "appelles", "as appelé"], 0, "Au futur simple, appeler avec « tu » s’écrit « tu appelleras »."], ["Passé composé", "Hier, j'___ un film avec ma famille.", ["ai regardé", "regardais", "regarderai", "regarde"], 0, "Au passé composé, regarder avec « je » se forme avec « ai » + « regardé »."], ["Passé composé", "Nous ___ nos exercices avant la récréation.", ["avons terminé", "terminions", "terminerons", "terminons"], 0, "Au passé composé, terminer avec « nous » se forme avec « avons » + « terminé »."], ["Passé composé", "Elle ___ à huit heures.", ["est arrivée", "a arrivée", "arrivait", "arrivera"], 0, "Arriver se conjugue au passé composé avec être : « elle est arrivée »."], ["Passé composé", "Ils ___ leurs chaussures avant d'entrer.", ["ont enlevé", "enlevaient", "enlèvent", "enlèveront"], 0, "Au passé composé, enlever avec « ils » se forme avec « ont » + « enlevé »."], ["Passé composé", "Vous ___ très tôt ce matin.", ["êtes partis", "avez partis", "partiez", "partirez"], 0, "Partir se conjugue au passé composé avec être : « vous êtes partis »."]];
+let qs=[],i=0,s=0,errs=[],lock=false,streak=0;
+const $=id=>document.getElementById(id);
+const mix=a=>[...a].sort(()=>Math.random()-.5);
+
+function screen(id){
+  document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function start(){
+  qs=mix(B).map(x=>({c:x[0],q:x[1],a:x[2],ok:x[3],e:x[4],order:mix(x[2].map((t,j)=>({t,j})))}));
+  i=0;s=0;errs=[];streak=0;
+  $("score").textContent="0"; $("streak").textContent="0";
+  screen("game"); render();
+}
+function render(){
+  lock=false; const x=qs[i];
+  $("num").textContent=i+1;
+  $("bar").style.width=(i/20*100)+"%";
+  $("cat").textContent=x.c;
+  $("q").textContent=x.q;
+  $("fb").className="feedback"; $("fb").innerHTML="";
+  $("next").style.display="none"; $("answers").innerHTML="";
+  x.order.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="answer"; b.textContent=o.t;
+    b.onclick=()=>pick(b,o.j);
+    $("answers").appendChild(b);
+  });
+}
+function pick(btn,j){
+  if(lock)return; lock=true;
+  const x=qs[i], bs=[...document.querySelectorAll(".answer")];
+  bs.forEach(b=>b.disabled=true);
+  bs.forEach((b,k)=>{if(x.order[k].j===x.ok)b.classList.add("good")});
+  if(j===x.ok){
+    s++; streak++;
+    $("score").textContent=s; $("streak").textContent=streak;
+    btn.classList.add("good");
+    $("fb").className="feedback show ok";
+    $("fb").innerHTML="<b>✅ Bonne réponse !</b><br>"+x.e;
+  } else {
+    streak=0; $("streak").textContent="0";
+    btn.classList.add("bad"); errs.push(x);
+    $("fb").className="feedback show no";
+    $("fb").innerHTML="<b>❌ Pas tout à fait.</b><br>"+x.e;
+  }
+  $("bar").style.width=((i+1)/20*100)+"%";
+  $("next").textContent=i===19?"Voir mon résultat 🏆":"Question suivante ➜";
+  $("next").style.display="inline-block";
+}
+function next(){ i++; i>=20?finish():render(); }
+
+function finish(){
+  screen("result");
+  const p=Math.round(s/20*100);
+  let title,msg,stars,label,bg,color;
+  if(s>=18){title="Excellent !";msg="Tu maîtrises très bien la conjugaison du CM2.";stars="⭐⭐⭐";label="Excellent";bg="#e6f7ec";color="#0d6c3a";confetti();}
+  else if(s>=14){title="Très bien !";msg="Tu as de très bonnes bases. Quelques révisions et ce sera parfait.";stars="⭐⭐";label="Très bien";bg="#eaf5ff";color="#1f63c8";}
+  else if(s>=10){title="En progrès !";msg="Tu progresses bien. Relis les corrections puis rejoue.";stars="⭐";label="En progrès";bg="#fff0d9";color="#b76a12";}
+  else{title="À revoir";msg="Relis les règles et retente le quiz. Chaque essai te fait progresser.";stars="🌱";label="À revoir";bg="#ffe7e7";color="#a53a44";}
+  $("rt").textContent=title;
+  $("stars").textContent=stars;
+  $("rs").textContent=s+" bonnes réponses sur 20 — "+p+" %";
+  $("msg").textContent=msg;
+  $("resultBadge").textContent=label;
+  $("resultBadge").style.background=bg; $("resultBadge").style.color=color;
+  $("review").innerHTML=errs.length
+    ? "<h3>Règles à revoir</h3>"+errs.slice(0,8).map(x=>"<div><b>"+x.c+"</b><br>"+x.e+"</div>").join("")
+    : "<div><b>Sans faute !</b><br>Tu as répondu correctement aux 20 questions.</div>";
+}
+function goBack(){
+  if(document.referrer) history.back();
+  else window.location.href="/";
+}
+async function toggleFullscreen(){
+  try{
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(e){}
+}
+function confetti(){
+  const box=$("confetti"), colors=["#15924b","#f4c21f","#f18a2e","#2867c8","#ec5f9d","#7a55d7"];
+  box.innerHTML="";
+  for(let n=0;n<70;n++){
+    const p=document.createElement("i");
+    p.style.left=Math.random()*100+"vw";
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=(Math.random()*.7)+"s";
+    p.style.transform="rotate("+Math.random()*360+"deg)";
+    box.appendChild(p);
+  }
+  setTimeout(()=>box.innerHTML="",2600);
+}
+$("go").onclick=start;
+$("next").onclick=next;
+$("again").onclick=start;
+$("backCourse").onclick=goBack;
+$("backCourse2").onclick=goBack;
+$("fullscreen").onclick=toggleFullscreen;
+document.addEventListener("fullscreenchange",()=>{
+  $("fullscreen").textContent=document.fullscreenElement?"✕ Quitter le plein écran":"⛶ Plein écran";
+});
+</script>
+</body>
+</html>
